@@ -2,10 +2,28 @@
 
 <body>
     <%- include('includes/navbar.ejs') %>
-    <div class="container">
+    <div class="container my-3">
         <div class="row text-center">
             <div class="col-12">
-                HOME
+                <h1>Home</h1>
             </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <% products.forEach(product => {  %>
+               <div class="col-12 col-md-4">
+                <div class="card">
+                    <img src="https://picsum.photos/200" class="card-img-top" alt="...">
+                    <div class="card-body">
+                      <h5 class="card-title"><%= product.name %></h5>
+                      <p class="card-text"><%= product.description %></p>
+                      <p class="card-text">$ <%= product.price %></p>
+                      <a href="#" class="btn btn-primary">Go somewhere</a>
+                      <a href="#" class="btn btn-secondary">Edit</a>
+                    </div>
+                  </div>
+               </div>
+            <% }) %>
         </div>
     </div>
