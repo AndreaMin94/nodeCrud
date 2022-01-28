@@ -37,3 +37,21 @@ exports.editProduct = (req, res, next) => {
         res.redirect('/');
     }).catch(err => console.log(err));
 }
+
+exports.deleteProduct = (req, res, next) => {
+    const prodId = req.params.prodId;
+    Product.destroy({
+        where: {
+            id: prodId
+        }
+    }).then(result => {
+        res.redirect('/');
+    }).catch(err => console.log(err));
+    // Product.findByPk(prodId)
+    // .then(product => {console.log(product);
+    //     return product.delete();
+    // }).then(result => {
+    //     res.redirect('/');
+    // })
+    // .catch(err => console.log(err));
+}
