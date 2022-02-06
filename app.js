@@ -11,6 +11,8 @@ const adminroutes = require('./routes/adminroutes');
 //models
 const User = require('./models/User');
 const Product = require('./models/Product');
+const CartItem = require('./models/cart-item');
+const Cart = require('./models/Cart');
 
 
 const app = express();
@@ -35,6 +37,11 @@ app.use(homeroutes);
 //relationships
 Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
 User.hasMany(Product);
+User.hasOne(Cart);
+Cart.belongsTo(User);
+Cart.belongsToMany(Product, { through: CartItem});
+Product.belongsToMany(Cart, { through: CartItem});
+
 
 // sequelize.sync({force: true})
 sequelize.sync()
@@ -47,7 +54,8 @@ sequelize.sync()
     }
     return user;
 }).then(user => {
-    console.log('## result : ' , user);
+    return user.createCart();
+}).then(cart => {
     app.listen(3000);
 })
 .catch( err => console.error(err));
