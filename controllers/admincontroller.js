@@ -8,7 +8,7 @@ exports.storeProduct = (req, res, next) => {
     const name = req.body.name;
     const price = req.body.price;
     const description = req.body.description;
-    Product.create({
+    req.user.createProduct({
         name, price, description
     }).then(result => {
         res.redirect('/');
@@ -54,4 +54,13 @@ exports.deleteProduct = (req, res, next) => {
     //     res.redirect('/');
     // })
     // .catch(err => console.log(err));
+}
+exports.getUserProducts = (req, res, next) => {
+    req.user.getProducts()
+    .then(products => {
+        res.render('admin/products',{
+            products
+        });
+    })
+    .catch(err => console.log(err))
 }

@@ -20,12 +20,35 @@ app.set('views', 'views');
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
-
-sequelize.sync()
-.then(result => {
-    //console.log('## result : ' , result);
+app.use((req, res, next ) => {
+    User.findByPk(1)
+    .then(user => {
+        req.user = user;
+        next();
+    })
+    .catch(err => console.log(err));
 })
 
 app.use('/admin', adminroutes);
 app.use(homeroutes);
-app.listen(3000);
+
+//relationships
+Product.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
+User.hasMany(Product);
+
+// sequelize.sync({force: true})
+sequelize.sync()
+.then(result => {
+    //console.log('## result : ' , result);
+    return User.findByPk(1)
+}).then(user => {
+    if(!user){
+        return User.create({name: "Andrea", email: "andrea@test.com", })
+    }
+    return user;
+}).then(user => {
+    console.log('## result : ' , user);
+    app.listen(3000);
+})
+.catch( err => console.error(err));
+
